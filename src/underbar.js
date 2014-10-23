@@ -8,6 +8,7 @@ var _ = {};
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
+    return val;
   };
 
   /**
@@ -102,6 +103,10 @@ var _ = {};
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var seen = [];
+    return _.filter(array, function(item, index, array) {
+        return seen[item] ? false : (seen[item] = true);
+    }); 
   };
 
 
