@@ -168,10 +168,18 @@ var _ = {};
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
-    _.each(collection, function(item, index, collection) {
-      accumulator = iterator(accumulator, item);
-    }); 
-    return accumulator;
+    if (arguments.length < 3){
+      accumulator = collection[0];
+      _.each(collection, function(item, index, collection) {
+        accumulator = iterator(accumulator, item);
+      }); 
+      return accumulator;
+    } else {
+      _.each(collection, function(item, index, collection) {
+        accumulator = iterator(accumulator, item);
+      });
+      return accumulator;
+    }
   };
 
   // Determine if the array or object contains a given value (using `===`).
