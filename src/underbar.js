@@ -197,13 +197,26 @@ var _ = {};
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
+    return _.reduce(collection, function(truthTest, item){      
+      return Boolean(iterator(item)) && Boolean(truthTest);
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    return _.every(collection, function(truthTest, item){
+      return Boolean(iterator(item)) || Boolean(truthTest);
+    }, true);
+
+    // return _.reduce(collection, function(truthTest, item){      
+    //   if (Boolean(iterator(item))){
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
   };
 
 
@@ -226,11 +239,30 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var source, prop;
+    for (var i=1; i < arguments.length; i++){
+      source = arguments[i];
+      for (prop in source){
+        obj[prop] = source[prop];
+      }
+    }
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var source, prop;
+    for (var i = 1; i < arguments.length; i++){
+      source = arguments[i];
+      for (prop in source){
+//        if (!obj[prop]){
+        if (obj[prop] === void(0)){
+          obj[prop] = source[prop];   
+        } 
+      }
+    }
+    return obj;
   };
 
 
@@ -250,20 +282,17 @@ var _ = {};
     // time it's called.
     var alreadyCalled = false;
     var result;
-
     // TIP: We'll return a new function that delegates to the old one, but only
     // if it hasn't been called before.
     return function() {
       if (!alreadyCalled) {
-        // TIP: .apply(this, arguments) is the standard way to pass on all of the
-        // infromation from one function call to another.
         result = func.apply(this, arguments);
         alreadyCalled = true;
       }
-      // The new function always returns the originally computed result.
+      //The new function always returns the originally computed result.
       return result;
+      };
     };
-  };
 
   // Memoize an expensive function by storing its results. You may assume
   // that the function takes only one argument and that it is a primitive.
@@ -272,6 +301,16 @@ var _ = {};
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var alreadyCalled = false;
+    var result;
+
+    return function() {
+      if (!alreadyCalled) {
+        result = func.apply(null, arguments);
+        alreadyCalled = true;
+      }
+      return result;
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -281,6 +320,10 @@ var _ = {};
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    return setTimeout(function(){
+      return func.apply(null, args);
+    }, wait);
   };
 
 
@@ -295,7 +338,20 @@ var _ = {};
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-  };
+    var   temp = [];
+    for (var i = array.length; i > 0; i--) {
+      temp.push(array.splice(Math.floor(Math.random() * i),1));
+    }
+    return temp;
+
+    // for (var i = array.length -1; i > 0; i--){
+    //   var j = Math.floor(Math.random() * (i+1));
+    //   var temp = array[i];
+    //   array[i] = array[j];
+    //   array[j] = temp;
+    // }
+    // return array;
+  };  
 
 
   /**
