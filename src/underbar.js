@@ -303,45 +303,19 @@ var _ = {};
   // instead if possible.
   _.memoize = function(func) {
     var alreadyCalled = false;
-    var result;
-    var begArgs = arguments;
-    var endArgs;
-      
-    return function() {
-      if (!alreadyCalled){ 
-        result = func.apply(null, arguments);
-        alreadyCalled = true;
-      } else if (endArgs !== begArgs){
-        result = func.apply(null, arguments);
+    var result = {};
+    var key = arguments;
+
+    return function(key) {
+      if (key in result) {
+        result[key];
+      } else {
+        result[key] = func.apply(null, arguments);
         alreadyCalled = true;
       }
-      //endArgs = arguments;
-      endArgs = begArgs;
-      return result;
-    }        
+      return result[key];
+     }        
   };
-  //   var alreadyCalled = false;
-  //   var result;
-  //   var memo = {};
-      
-  //   return function() {
-  //     var args = Array.prototype.slice.call(arguments);
-  //     if (!alreadyCalled){ 
-  //       memo[args] = func.apply(null, args);
-  //       alreadyCalled = true;
-  //     } 
-  //     else if (alreadyCalled){
-  //       if (args in memo){
-  //         return memo[args];
-  //       } else {
-  //         memo[args] = func.apply(null, args);
-  //         alreadyCalled = true;
-  //       }
-  //     }
-  //   return result;
-  //   }        
-  // };
-
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
