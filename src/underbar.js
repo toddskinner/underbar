@@ -303,15 +303,44 @@ var _ = {};
   _.memoize = function(func) {
     var alreadyCalled = false;
     var result;
-
+    var begArgs = arguments;
+    var endArgs;
+      
     return function() {
-      if (!alreadyCalled) {
+      if (!alreadyCalled){ 
+        result = func.apply(null, arguments);
+        alreadyCalled = true;
+      } else if (endArgs !== begArgs){
         result = func.apply(null, arguments);
         alreadyCalled = true;
       }
+      //endArgs = arguments;
+      endArgs = begArgs;
       return result;
-    };
+    }        
   };
+  //   var alreadyCalled = false;
+  //   var result;
+  //   var memo = {};
+      
+  //   return function() {
+  //     var args = Array.prototype.slice.call(arguments);
+  //     if (!alreadyCalled){ 
+  //       memo[args] = func.apply(null, args);
+  //       alreadyCalled = true;
+  //     } 
+  //     else if (alreadyCalled){
+  //       if (args in memo){
+  //         return memo[args];
+  //       } else {
+  //         memo[args] = func.apply(null, args);
+  //         alreadyCalled = true;
+  //       }
+  //     }
+  //   return result;
+  //   }        
+  // };
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -338,21 +367,15 @@ var _ = {};
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-    var   temp = [];
-    for (var i = array.length; i > 0; i--) {
-      temp.push(array.splice(Math.floor(Math.random() * i),1));
+    var shuffled = array.slice();
+    for (var index = shuffled.length-1; index > 0; index--) {
+      var rand = Math.floor(Math.random() * (index+1));
+      var temp = shuffled[index];
+      shuffled[index] = shuffled[rand];
+      shuffled[rand] = temp;
     }
-    return temp;
-
-    // for (var i = array.length -1; i > 0; i--){
-    //   var j = Math.floor(Math.random() * (i+1));
-    //   var temp = array[i];
-    //   array[i] = array[j];
-    //   array[j] = temp;
-    // }
-    // return array;
+    return shuffled;
   };  
-
 
   /**
    * Note: This is the end of the pre-course curriculum. Feel free to continue,
