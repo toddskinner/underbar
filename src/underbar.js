@@ -1,4 +1,4 @@
-/*jshint eqnull:true, expr:true*/
+  /*jshint eqnull:true, expr:true*/
 
 var _ = {};
 
@@ -92,6 +92,27 @@ var _ = {};
     return result;
   };
 
+  // _.filter = function(collection, test) {
+  //   var result = [];
+  //   if (Array.isArray(collection)){
+  //     for (var i = 0; i < collection.length; i++){  
+  //       if(test(collection[i], i, collection)){
+  //         result.push(collection[i]);
+  //       }
+  //     }
+  //   } else {
+  //     for (var x in collection){
+  //       if(test(collection[x], x, collection)){
+  //         result.push(collection[x]);
+  //       }
+  //     }
+  //   }
+  //   return result;
+  // };
+
+
+
+
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     return _.filter(collection, function(item, index, collection) {
@@ -109,6 +130,28 @@ var _ = {};
     }); 
   };
 
+  // _.uniq = function(array) {
+  //   var seen = [];
+  //   var result = [];
+  //   if (Array.isArray(array)){
+  //     for (var i = 0; i < array.length; i++){  
+  //         if(!seen[array[i]]){
+  //           seen[array[i]] = true;
+  //           result.push(array[i]);
+  //         }
+  //       }
+  //     } else {
+  //     for (var x in array){
+  //       if(!seen[array[x]]){
+  //         seen[array[x]] = true;
+  //         result.push(array[x]);
+  //       }
+  //     }
+  //   }
+  //   return result;
+  // };
+
+
 
   // Return the results of applying an iterator to each element.
   _.map = function(collection, iterator) {
@@ -121,6 +164,21 @@ var _ = {};
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
   };
+
+  //  _.map = function(collection, iterator) {
+  //   var result = [];
+  //   if (Array.isArray(collection)){
+  //     for (var i = 0; i < collection.length; i++){  
+  //       result.push(iterator(collection[i], i, collection));
+  //     }
+  //   }
+  //   else {
+  //     for (var x in collection){
+  //       result.push(iterator(collection[x], x, collection));
+  //     }
+  //   }
+  //   return result;
+  // };    
 
   /*
    * TIP: map is really handy when you want to transform an array of
@@ -209,7 +267,7 @@ var _ = {};
     // TIP: There's a very clever way to re-use every() here.
     // return !(_.every(collection, function(truthTest, item){
     //   // return (Boolean(!iterator(item)) || Boolean(!truthTest));     
-    //   return (!truthTest);
+    //   return (iterator(item));
     // }));
     iterator = iterator || function(){ return true; };
     if (collection != undefined) {
@@ -220,7 +278,7 @@ var _ = {};
       }
       return false;
       }
-  };
+   };
 
   /**
    * OBJECTS
@@ -241,7 +299,8 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
-    var source, prop;
+    var source; 
+    var prop;
     for (var i=1; i < arguments.length; i++){
       source = arguments[i];
       for (prop in source){
